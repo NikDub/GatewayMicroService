@@ -1,6 +1,6 @@
-using Ocelot.Middleware;
+using AggregatorMicroService.Extensions;
 
-namespace GatewayMicroService;
+namespace AggregatorMicroService;
 
 public class Program
 {
@@ -10,7 +10,8 @@ public class Program
 
 
         builder.Services.AddControllers();
-        builder.Services.ConfigureOcelot(builder.Configuration);
+        builder.Services.ConfigureServices();
+        builder.Services.ConfigureSwagger();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
@@ -22,9 +23,9 @@ public class Program
             app.UseSwaggerUI();
         }
 
+        app.ConfigureExceptionHandler();
         app.UseHttpsRedirection();
-        app.UseOcelot().Wait();
-        app.UseAuthentication();
+
         app.UseAuthorization();
 
 

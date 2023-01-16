@@ -1,5 +1,85 @@
 {
+  "Aggregates": [
+    {
+      "RouteKeys": [
+        "Specializations",
+        "Offices"
+      ],
+      "UpstreamPathTemplate": "/gateway/OfficesAndSpecialization"
+    },
+    {
+      "RouteKeys": [
+        "Specializations",
+        "Offices",
+        "Services",
+        "DoctorsAtWork"
+      ],
+      "UpstreamPathTemplate": "/gateway/InfoForCreateAppointment"
+    },
+    {
+      "RouteKeys": [
+        "Specializations",
+        "Offices",
+        "Services",
+        "DoctorsAtWork",
+        "Patients"
+      ],
+      "UpstreamPathTemplate": "/gateway/InfoForCreateAppointmentWithPatients"
+    }
+  ],
+
   "Routes": [
+    // aggregatorMS 7113
+    {
+      "UpstreamPathTemplate": "/gateway/DoctorsWithOffice",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/Aggregators/DoctorsWithOffice",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7113
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/Doctor",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/Aggregators/Doctor",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7113
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/Patient/Profile",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/Aggregators/PatientProfile",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7113
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/Appointments/Schedule",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/Aggregators/Appointments/Schedule",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7113
+        }
+      ]
+    },
+
+
     //IdentityApi 8080
     {
       "UpstreamPathTemplate": "/gateway/Identity/Login?returnUrl={returnUrl}",
@@ -86,23 +166,25 @@
       ]
     },
 
+
     //OfficesApi 7200
     {
       "UpstreamPathTemplate": "/gateway/Offices",
       "UpstreamHttpMethod": [ "Get" ],
-      "DownstreamPathTemplate": "/Offices",
+      "DownstreamPathTemplate": "/api/Offices",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
           "Port": 7200
         }
-      ]
+      ],
+      "Key": "Offices"
     },
     {
       "UpstreamPathTemplate": "/gateway/Offices/{id}",
       "UpstreamHttpMethod": [ "Get" ],
-      "DownstreamPathTemplate": "/Offices/{id}",
+      "DownstreamPathTemplate": "/api/Offices/{id}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -114,7 +196,7 @@
     {
       "UpstreamPathTemplate": "/gateway/Offices",
       "UpstreamHttpMethod": [ "Post" ],
-      "DownstreamPathTemplate": "/Offices",
+      "DownstreamPathTemplate": "/api/Offices",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -126,7 +208,7 @@
     {
       "UpstreamPathTemplate": "/gateway/Offices/{id}",
       "UpstreamHttpMethod": [ "Put" ],
-      "DownstreamPathTemplate": "/Offices/{id}",
+      "DownstreamPathTemplate": "/api/Offices/{id}",
       "DownstreamScheme": "https",
 
       "DownstreamHostAndPorts": [
@@ -139,7 +221,7 @@
     {
       "UpstreamPathTemplate": "/gateway/Offices/{id}/status",
       "UpstreamHttpMethod": [ "Put" ],
-      "DownstreamPathTemplate": "/Offices/{id}/status",
+      "DownstreamPathTemplate": "/api/Offices/{id}/status",
       "DownstreamScheme": "https",
 
       "DownstreamHostAndPorts": [
@@ -150,152 +232,6 @@
       ]
     },
 
-    //ServicesApi 7249
-    {
-      "UpstreamPathTemplate": "/gateway/Services/",
-      "UpstreamHttpMethod": [ "Get" ],
-      "DownstreamPathTemplate": "/api/Services/",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7249
-        }
-      ]
-    },
-    {
-      "UpstreamPathTemplate": "/gateway/Services/all",
-      "UpstreamHttpMethod": [ "Get" ],
-      "DownstreamPathTemplate": "/api/Services/all",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7249
-        }
-      ]
-    },
-    {
-      "UpstreamPathTemplate": "/gateway/Services/{id}",
-      "UpstreamHttpMethod": [ "Get" ],
-      "DownstreamPathTemplate": "/api/Services/{id}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7249
-        }
-      ]
-    },
-    {
-      "UpstreamPathTemplate": "/gateway/Services/",
-      "UpstreamHttpMethod": [ "Post" ],
-      "DownstreamPathTemplate": "/api/Services/",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7249
-        }
-      ]
-    },
-    {
-      "UpstreamPathTemplate": "/gateway/Services/{id}",
-      "UpstreamHttpMethod": [ "Put" ],
-      "DownstreamPathTemplate": "/api/Services/{id}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7249
-        }
-      ]
-    },
-    {
-      "UpstreamPathTemplate": "/gateway/Services/{id}/status/{status}",
-      "UpstreamHttpMethod": [ "Put" ],
-      "DownstreamPathTemplate": "/api/Services/{id}/status/{status}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7249
-        }
-      ]
-    },
-
-    {
-      "UpstreamPathTemplate": "/gateway/Specializations/",
-      "UpstreamHttpMethod": [ "Get" ],
-      "DownstreamPathTemplate": "/api/Specializations/",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7249
-        }
-      ]
-    },
-    {
-      "UpstreamPathTemplate": "/gateway/Specializations/{id}",
-      "UpstreamHttpMethod": [ "Get" ],
-      "DownstreamPathTemplate": "/api/Specializations/{id}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7249
-        }
-      ]
-    },
-    {
-      "UpstreamPathTemplate": "/gateway/Specializations/{id}/service",
-      "UpstreamHttpMethod": [ "Get" ],
-      "DownstreamPathTemplate": "/api/Specializations/{id}/service",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7249
-        }
-      ]
-    },
-    {
-      "UpstreamPathTemplate": "/gateway/Specializations/",
-      "UpstreamHttpMethod": [ "Post" ],
-      "DownstreamPathTemplate": "/api/Specializations/",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7249
-        }
-      ]
-    },
-    {
-      "UpstreamPathTemplate": "/gateway/Specializations/{id}",
-      "UpstreamHttpMethod": [ "Put" ],
-      "DownstreamPathTemplate": "/api/Specializations/{id}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7249
-        }
-      ]
-    },
-    {
-      "UpstreamPathTemplate": "/gateway/Specializations/{id}/status/{status}",
-      "UpstreamHttpMethod": [ "Put" ],
-      "DownstreamPathTemplate": "/api/Specializations/{id}/status/{status}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7249
-        }
-      ]
-    },
 
     //Profiles - 7016
     {
@@ -308,7 +244,8 @@
           "Host": "localhost",
           "Port": 7016
         }
-      ]
+      ],
+      "Key": "DoctorsAtWork"
     },
     {
       "UpstreamPathTemplate": "/gateway/Doctors/{id}",
@@ -417,7 +354,8 @@
           "Host": "localhost",
           "Port": 7016
         }
-      ]
+      ],
+      "Key": "Patients"
     },
     {
       "UpstreamPathTemplate": "/gateway/Patients/{id}",
@@ -456,7 +394,8 @@
       ]
     },
 
-    //Photo - 7201
+
+    //Photo - 7301
     {
       "UpstreamPathTemplate": "/gateway/Documents/{id}",
       "UpstreamHttpMethod": [ "Get" ],
@@ -465,7 +404,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7201
+          "Port": 7301
         }
       ]
     },
@@ -477,7 +416,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7201
+          "Port": 7301
         }
       ]
     },
@@ -489,7 +428,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7201
+          "Port": 7301
         }
       ]
     },
@@ -501,10 +440,11 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7201
+          "Port": 7301
         }
       ]
     },
+
 
     //Schedules - 7222
     {
@@ -604,9 +544,144 @@
           "Port": 7222
         }
       ]
+    },
+
+
+    //ServicesApi 7249
+    {
+      "UpstreamPathTemplate": "/gateway/Services/",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/Services/",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7249
+        }
+      ],
+      "Key": "Services"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/Services/all",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/Services/all",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7249
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/Services/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/Services/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7249
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/Services/",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/api/Services/",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7249
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/Services/{id}",
+      "UpstreamHttpMethod": [ "Put" ],
+      "DownstreamPathTemplate": "/api/Services/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7249
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/Services/{id}/status/{status}",
+      "UpstreamHttpMethod": [ "Put" ],
+      "DownstreamPathTemplate": "/api/Services/{id}/status/{status}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7249
+        }
+      ]
+    },
+
+    {
+      "UpstreamPathTemplate": "/gateway/Specializations/",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "DownstreamPathTemplate": "/api/Specializations/",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7249
+        }
+      ],
+      "Key": "Specializations"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/Specializations/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/Specializations/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7249
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/Specializations/{id}/service",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/Specializations/{id}/service",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7249
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/Specializations/{id}",
+      "UpstreamHttpMethod": [ "Put" ],
+      "DownstreamPathTemplate": "/api/Specializations/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7249
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/Specializations/{id}/status/{status}",
+      "UpstreamHttpMethod": [ "Put" ],
+      "DownstreamPathTemplate": "/api/Specializations/{id}/status/{status}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7249
+        }
+      ]
     }
-  ],
-  "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:7296"
-  }
+  ]
 }
