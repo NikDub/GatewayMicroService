@@ -63,7 +63,7 @@ public class HttpService : IHttpService
                 HttpStatusCode.Unauthorized => new UnauthorizedAccessException(responseMessage.ReasonPhrase),
                 HttpStatusCode.Forbidden => new ForbiddenException(responseMessage.ReasonPhrase),
                 HttpStatusCode.NotFound => new NotFoundException(responseMessage.ReasonPhrase),
-                HttpStatusCode.UnprocessableEntity => new ModelException(responseMessage.ReasonPhrase);
+                HttpStatusCode.UnprocessableEntity => new ModelException(responseMessage.ReasonPhrase),
                 _ => new Exception(responseMessage.ReasonPhrase)
             };
     }
