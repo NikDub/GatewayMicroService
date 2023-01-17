@@ -13,7 +13,7 @@ public static class ServiceExtensions
     {
         services.AddScoped<IAggregatorService, AggregatorService>();
 
-        services.AddScoped<IHttpClient, HttpClient.HttpClient>();
+        services.AddScoped<IHttpService, HttpService>();
 
         services.AddSingleton<UrlPath>();
         services.AddAutoMapper(typeof(MappingProfile));
