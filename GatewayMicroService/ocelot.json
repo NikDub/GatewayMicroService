@@ -170,7 +170,7 @@
     //OfficesApi 7200
     {
       "UpstreamPathTemplate": "/gateway/Offices",
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": [ "Get", "Post" ],
       "DownstreamPathTemplate": "/api/Offices",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
@@ -183,34 +183,9 @@
     },
     {
       "UpstreamPathTemplate": "/gateway/Offices/{id}",
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": [ "Get", "Put" ],
       "DownstreamPathTemplate": "/api/Offices/{id}",
       "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7200
-        }
-      ]
-    },
-    {
-      "UpstreamPathTemplate": "/gateway/Offices",
-      "UpstreamHttpMethod": [ "Post" ],
-      "DownstreamPathTemplate": "/api/Offices",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7200
-        }
-      ]
-    },
-    {
-      "UpstreamPathTemplate": "/gateway/Offices/{id}",
-      "UpstreamHttpMethod": [ "Put" ],
-      "DownstreamPathTemplate": "/api/Offices/{id}",
-      "DownstreamScheme": "https",
-
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",

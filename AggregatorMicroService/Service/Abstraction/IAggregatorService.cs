@@ -7,6 +7,6 @@ public interface IAggregatorService
 {
     Task CreatedDoctorWithPhotoAndAccountAsync(DoctorForCreatedAggregatedDto model, string attributeFromHeader);
     Task CreatedPatientProfileWithPhotoByPatient(PatientForCreatedAggregatedDto model, string attributeFromHeader);
-    Task<List<DoctorWithOfficeDto>> GetDoctorWithOfficeAsync(string attributeFromHeader);
-    Task<List<AppointmentWithPatientPhoneDto>> GetAppointmentScheduleAsync(string attributeFromHeader);
+    Task<IEnumerable<DoctorWithOfficeDto>> GetDoctorWithOfficeAsync(string attributeFromHeader);
+    Task<IEnumerable<AppointmentWithPatientPhoneDto>> GetAppointmentScheduleAsync(string attributeFromHeader);
 }

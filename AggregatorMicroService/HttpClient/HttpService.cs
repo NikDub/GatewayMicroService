@@ -5,21 +5,21 @@ using Newtonsoft.Json;
 
 namespace AggregatorMicroService.HttpClient;
 
-public class HttpClient : IHttpClient
+public class HttpService : IHttpService
 {
     private readonly IHttpClientFactory _httpClientFactory;
 
-    public HttpClient(IHttpClientFactory httpClientFactory)
+    public HttpService(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<List<T>> HttpGetAsync<T>(string url, string attributeFromHeader)
+    public async Task<IEnumerable<T>> HttpGetAsync<T>(string url, string attributeFromHeader)
     {
         var httpClient = _httpClientFactory.CreateClient();
         httpClient.DefaultRequestHeaders.Add("Authorization", attributeFromHeader);
         var responseMessage = await httpClient.GetAsync(url);
-        CheckAndGenerateExceptionByStatusCode(responseMessage);
+        CheckAndGenerateExceptionByNotSuccessfullyStatusCode(responseMessage);
         return JsonConvert.DeserializeObject<List<T>>(await responseMessage.Content.ReadAsStringAsync());
     }
 
@@ -28,7 +28,7 @@ public class HttpClient : IHttpClient
         var httpClient = _httpClientFactory.CreateClient();
         httpClient.DefaultRequestHeaders.Add("Authorization", attributeFromHeader);
         var responseMessage = await httpClient.GetAsync($"{url}/{id}");
-        CheckAndGenerateExceptionByStatusCode(responseMessage);
+        CheckAndGenerateExceptionByNotSuccessfullyStatusCode(responseMessage);
         return JsonConvert.DeserializeObject<T>(await responseMessage.Content.ReadAsStringAsync());
     }
 
@@ -39,7 +39,7 @@ public class HttpClient : IHttpClient
         var data = System.Text.Json.JsonSerializer.Serialize(content);
         var requestContent = new StringContent(data, Encoding.UTF8, "application/json");
         var responseMessage = await httpClient.PostAsync(url, requestContent);
-        CheckAndGenerateExceptionByStatusCode(responseMessage);
+        CheckAndGenerateExceptionByNotSuccessfullyStatusCode(responseMessage);
         return JsonConvert.DeserializeObject<T>(await responseMessage.Content.ReadAsStringAsync());
     }
 
@@ -50,10 +50,10 @@ public class HttpClient : IHttpClient
         var data = System.Text.Json.JsonSerializer.Serialize(content);
         var requestContent = new StringContent(data, Encoding.UTF8, "application/json");
         var responseMessage = await httpClient.PutAsync($"{url}/{id}", requestContent);
-        CheckAndGenerateExceptionByStatusCode(responseMessage);
+        CheckAndGenerateExceptionByNotSuccessfullyStatusCode(responseMessage);
     }
 
-    private void CheckAndGenerateExceptionByStatusCode(HttpResponseMessage responseMessage)
+    private void CheckAndGenerateExceptionByNotSuccessfullyStatusCode(HttpResponseMessage responseMessage)
     {
         if (!responseMessage.IsSuccessStatusCode)
             throw responseMessage.StatusCode switch

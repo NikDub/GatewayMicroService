@@ -24,9 +24,6 @@ public class Program
 
         app.UseHttpsRedirection();
         app.UseOcelot().Wait();
-        app.UseAuthentication();
-        app.UseAuthorization();
-
 
         app.MapControllers();
 

@@ -1,5 +1,7 @@
 ﻿using AggregatorMicroService.Dto.Aggregated;
+using AggregatorMicroService.Entities.Enums;
 using AggregatorMicroService.Service.Abstraction;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AggregatorMicroService.Controllers;
@@ -16,19 +18,20 @@ public class AggregatorsController : Controller
     }
 
     [HttpGet("DoctorsWithOffice")]
+    [Authorize(Roles = nameof(UserRole.Receptionist))]
     public async Task<IActionResult> GetDoctorsWithOffice()
     {
         return Ok(await _aggregatorService.GetDoctorWithOfficeAsync(GetAuthorizationFromHeader()));
     }
 
-    [HttpPost("Doctor")] // TODO redirect
+    [HttpPost("Doctor")]
     public async Task<IActionResult> CreateDoctor([FromBody] DoctorForCreatedAggregatedDto model)
     {
         await _aggregatorService.CreatedDoctorWithPhotoAndAccountAsync(model, GetAuthorizationFromHeader());
         return Created("", null);
     }
 
-    [HttpPost("PatientProfile")] // TODO redirect
+    [HttpPost("PatientProfile")]
     public async Task<IActionResult> CreatePatientProfile([FromBody] PatientForCreatedAggregatedDto model)
     {
         await _aggregatorService.CreatedPatientProfileWithPhotoByPatient(model, GetAuthorizationFromHeader());

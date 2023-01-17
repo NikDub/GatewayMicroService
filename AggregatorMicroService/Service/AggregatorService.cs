@@ -13,48 +13,49 @@ public class AggregatorService : IAggregatorService
 {
     private readonly IMapper _mapper;
     private readonly UrlPath _urlPath;
-    private readonly IHttpClient _httpClient;
+    private readonly IHttpService _httpService;
 
-    public AggregatorService(IMapper mapper, UrlPath urlPath, IHttpClient httpClient)
+    public AggregatorService(IMapper mapper, UrlPath urlPath, IHttpService httpClient)
     {
         _mapper = mapper;
         _urlPath = urlPath;
-        _httpClient = httpClient;
+        _httpService = httpClient;
     }
 
     public async Task CreatedPatientProfileWithPhotoByPatient(PatientForCreatedAggregatedDto model,
         string attributeFromHeader)
     {
-        var photo = await _httpClient.HttpCreateAsync<PhotoDto, PhotoCreatedDto>(_urlPath.Photo, model.Photo, attributeFromHeader);
+        var photo = await _httpService.HttpCreateAsync<PhotoDto, PhotoCreatedDto>(_urlPath.Photo, model.Photo, attributeFromHeader);
 
-        await _httpClient.HttpPutAsync(_urlPath.AccountChangePhoto, model.AccountId, photo.Id, attributeFromHeader);
+        await _httpService.HttpPutAsync(_urlPath.AccountChangePhoto, model.AccountId, photo.Id, attributeFromHeader);
 
         var patientMap = _mapper.Map<PatientForCreateDto>(model);
-        await _httpClient.HttpCreateAsync<PatientDto, PatientForCreateDto>(_urlPath.PatientProfile, patientMap, attributeFromHeader);
+        await _httpService.HttpCreateAsync<PatientDto, PatientForCreateDto>(_urlPath.PatientProfile, patientMap, attributeFromHeader);
     }
 
     public async Task CreatedDoctorWithPhotoAndAccountAsync(DoctorForCreatedAggregatedDto model, string attributeFromHeader)
     {
-        await _httpClient.HttpGetByIdAsync<OfficeDto>(_urlPath.Offices, model.OfficeId, attributeFromHeader);
+        var office = await _httpService.HttpGetByIdAsync<OfficeDto>(_urlPath.Offices, model.OfficeId, attributeFromHeader);
         var specialization =
-            await _httpClient.HttpGetByIdAsync<SpecializationDto>(_urlPath.Specialization, model.SpecializationId, attributeFromHeader);
+            await _httpService.HttpGetByIdAsync<SpecializationDto>(_urlPath.Specialization, model.SpecializationId, attributeFromHeader);
 
-        var photo = await _httpClient.HttpCreateAsync<PhotoDto, PhotoCreatedDto>(_urlPath.Photo, model.Photo, attributeFromHeader);
+        var photo = await _httpService.HttpCreateAsync<PhotoDto, PhotoCreatedDto>(_urlPath.Photo, model.Photo, attributeFromHeader);
 
         var accountDto = new DoctorRegistrationDto { Email = model.Email, PhotoId = photo.Id };
-        var accountId = await _httpClient.HttpCreateAsync<string, DoctorRegistrationDto>(_urlPath.AccountDoctor, accountDto, attributeFromHeader);
+        var accountId = await _httpService.HttpCreateAsync<string, DoctorRegistrationDto>(_urlPath.AccountDoctor, accountDto, attributeFromHeader);
 
         var doctorForCreateDto = _mapper.Map<DoctorForCreateDto>(model);
         doctorForCreateDto.AccountId = accountId;
         doctorForCreateDto.SpecializationId = specialization.Id;
         doctorForCreateDto.SpecializationName = specialization.Name;
-        await _httpClient.HttpCreateAsync<DoctorDto, DoctorForCreateDto>(_urlPath.Doctors, doctorForCreateDto, attributeFromHeader);
+        doctorForCreateDto.OfficeId = office.Id;
+        await _httpService.HttpCreateAsync<DoctorDto, DoctorForCreateDto>(_urlPath.Doctors, doctorForCreateDto, attributeFromHeader);
     }
 
-    public async Task<List<DoctorWithOfficeDto>> GetDoctorWithOfficeAsync(string attributeFromHeader)
+    public async Task<IEnumerable<DoctorWithOfficeDto>> GetDoctorWithOfficeAsync(string attributeFromHeader)
     {
-        var offices = await _httpClient.HttpGetAsync<OfficeDto>(_urlPath.Offices, attributeFromHeader);
-        var doctors = await _httpClient.HttpGetAsync<DoctorDto>(_urlPath.Doctors, attributeFromHeader);
+        var offices = await _httpService.HttpGetAsync<OfficeDto>(_urlPath.Offices, attributeFromHeader);
+        var doctors = await _httpService.HttpGetAsync<DoctorDto>(_urlPath.Doctors, attributeFromHeader);
 
         if (offices == null || doctors == null)
             return null;
@@ -73,10 +74,10 @@ public class AggregatorService : IAggregatorService
         return doctorWithOfficeList;
     }
 
-    public async Task<List<AppointmentWithPatientPhoneDto>> GetAppointmentScheduleAsync(string attributeFromHeader)
+    public async Task<IEnumerable<AppointmentWithPatientPhoneDto>> GetAppointmentScheduleAsync(string attributeFromHeader)
     {
-        var appointments = _httpClient.HttpGetAsync<AppointmentDto>(_urlPath.Appointments, attributeFromHeader);
-        var patients = await _httpClient.HttpGetAsync<PatientDto>(_urlPath.Patient, attributeFromHeader);
+        var appointments = _httpService.HttpGetAsync<AppointmentDto>(_urlPath.Appointments, attributeFromHeader);
+        var patients = await _httpService.HttpGetAsync<PatientDto>(_urlPath.Patient, attributeFromHeader);
         if (appointments == null || patients == null)
             return null;
 
