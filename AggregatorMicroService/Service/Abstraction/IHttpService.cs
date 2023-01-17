@@ -1,4 +1,4 @@
-﻿namespace AggregatorMicroService.HttpClient;
+﻿namespace AggregatorMicroService.Service.Abstraction;
 
 public interface IHttpService
 {

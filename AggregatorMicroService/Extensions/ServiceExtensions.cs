@@ -1,5 +1,4 @@
-﻿using AggregatorMicroService.HttpClient;
-using AggregatorMicroService.Middlewares;
+﻿using AggregatorMicroService.Middlewares;
 using AggregatorMicroService.Service;
 using AggregatorMicroService.Service.Abstraction;
 using AggregatorMicroService.Static;

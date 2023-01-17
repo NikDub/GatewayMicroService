@@ -2,7 +2,6 @@
 using AggregatorMicroService.Dto.Aggregated;
 using AggregatorMicroService.Dto.Photos;
 using AggregatorMicroService.Dto.Profiles;
-using AggregatorMicroService.HttpClient;
 using AggregatorMicroService.Service.Abstraction;
 using AggregatorMicroService.Static;
 using AutoMapper;
