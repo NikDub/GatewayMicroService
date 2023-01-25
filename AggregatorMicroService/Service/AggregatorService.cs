@@ -83,7 +83,7 @@ public class AggregatorService : IAggregatorService
         var appointmentsWithPatientPhone = new List<AppointmentWithPatientPhoneDto>();
         foreach (var appointment in await appointments)
         {
-            var patient = patients.FirstOrDefault(r => r.AccountId == appointment.PatientId);
+            var patient = patients.FirstOrDefault(r => r.Id == appointment.PatientId);
             if (patient == null)
                 continue;
             var appointmentsWithPhone = _mapper.Map<AppointmentWithPatientPhoneDto>(appointment);
