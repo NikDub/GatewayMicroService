@@ -4,7 +4,7 @@ namespace AggregatorMicroService.Dto.Aggregated;
 
 public class PatientForCreatedAggregatedDto
 {
-    public string AccountId { get; set; }
+    public Guid AccountId { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string MiddleName { get; set; }

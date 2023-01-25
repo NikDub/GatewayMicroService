@@ -4,7 +4,7 @@ namespace AggregatorMicroService.Dto.Profiles;
 
 public class PatientForCreateDto
 {
-    public string AccountId { get; set; }
+    public Guid AccountId { get; set; }
 
     [Required] public string FirstName { get; set; }
 

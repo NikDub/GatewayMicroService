@@ -24,7 +24,7 @@ public class HttpService : IHttpService
         return JsonConvert.DeserializeObject<List<T>>(await responseMessage.Content.ReadAsStringAsync());
     }
 
-    public async Task<T> HttpGetByIdAsync<T>(string url, string id, string attributeFromHeader)
+    public async Task<T> HttpGetByIdAsync<T>(string url, Guid id, string attributeFromHeader)
     {
         var httpClient = _httpClientFactory.CreateClient();
         httpClient.DefaultRequestHeaders.Add("Authorization", attributeFromHeader);
@@ -44,7 +44,7 @@ public class HttpService : IHttpService
         return JsonConvert.DeserializeObject<T>(await responseMessage.Content.ReadAsStringAsync());
     }
 
-    public async Task HttpPutAsync<TF>(string url, string id, TF content, string attributeFromHeader)
+    public async Task HttpPutAsync<TF>(string url, Guid id, TF content, string attributeFromHeader)
     {
         var httpClient = _httpClientFactory.CreateClient();
         httpClient.DefaultRequestHeaders.Add("Authorization", attributeFromHeader);

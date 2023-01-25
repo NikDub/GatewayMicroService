@@ -9,9 +9,9 @@ public class DoctorForCreatedAggregatedDto
     public string MiddleName { get; set; }
     public DateTime DateOfBirth { get; set; }
     public int CareerStartYear { get; set; }
-    public string SpecializationId { get; set; }
-    public string StatusId { get; set; }
-    public string OfficeId { get; set; }
+    public Guid SpecializationId { get; set; }
+    public Guid StatusId { get; set; }
+    public Guid OfficeId { get; set; }
     public string Email { get; set; }
     public PhotoCreatedDto Photo { get; set; }
 }

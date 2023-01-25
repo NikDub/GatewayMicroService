@@ -41,7 +41,7 @@ public class AggregatorService : IAggregatorService
         var photo = await _httpService.HttpCreateAsync<PhotoDto, PhotoCreatedDto>(_urlPath.Photo, model.Photo, attributeFromHeader);
 
         var accountDto = new DoctorRegistrationDto { Email = model.Email, PhotoId = photo.Id };
-        var accountId = await _httpService.HttpCreateAsync<string, DoctorRegistrationDto>(_urlPath.AccountDoctor, accountDto, attributeFromHeader);
+        var accountId = await _httpService.HttpCreateAsync<Guid, DoctorRegistrationDto>(_urlPath.AccountDoctor, accountDto, attributeFromHeader);
 
         var doctorForCreateDto = _mapper.Map<DoctorForCreateDto>(model);
         doctorForCreateDto.AccountId = accountId;
