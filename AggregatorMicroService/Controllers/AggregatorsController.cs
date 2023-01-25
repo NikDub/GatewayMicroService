@@ -18,7 +18,6 @@ public class AggregatorsController : Controller
     }
 
     [HttpGet("DoctorsWithOffice")]
-    [Authorize(Roles = nameof(UserRole.Receptionist))]
     public async Task<IActionResult> GetDoctorsWithOffice()
     {
         return Ok(await _aggregatorService.GetDoctorWithOfficeAsync(GetAuthorizationFromHeader()));
