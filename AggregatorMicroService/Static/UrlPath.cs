@@ -20,10 +20,15 @@ public class UrlPath
         _configuration.GetValue<string>(MicroServiceConfigurationKeys.PhotosUrlKey) + "/Documents";
 
     public string Account => _configuration.GetValue<string>(MicroServiceConfigurationKeys.IdentityUrlKey) + "/Auth";
+    public string AccountDoctorPhoto => Account + "/Doctors";
 
+    public string DoctorsAtWork => Doctors + "/AtWork";
     public string PatientProfile => Patient + "/profile";
     public string AccountDoctor => Account + "/Doctor";
     public string AccountChangePhoto => Account + "/PhotoChange";
     public string Photo => Documents + "/Photo";
+    public string PhotoUrl => Documents + "/url";
     public string Appointments => _configuration.GetValue<string>(MicroServiceConfigurationKeys.SchedulesUrlKey) + "/Appointments";
+
+    public string AppointmentsWeeklyByDoctor => Appointments + "/Week/Doctor";
 }

@@ -10,7 +10,7 @@ public class DoctorForCreatedAggregatedDto
     public DateTime DateOfBirth { get; set; }
     public int CareerStartYear { get; set; }
     public Guid SpecializationId { get; set; }
-    public Guid StatusId { get; set; }
+    public StatusDto Status { get; set; }
     public Guid OfficeId { get; set; }
     public string Email { get; set; }
     public PhotoCreatedDto Photo { get; set; }

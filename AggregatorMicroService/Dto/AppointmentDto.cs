@@ -1,4 +1,6 @@
-﻿namespace AggregatorMicroService.Dto;
+﻿using AggregatorMicroService.Entities.Enums;
+
+namespace AggregatorMicroService.Dto;
 
 public class AppointmentDto
 {
@@ -8,7 +10,9 @@ public class AppointmentDto
     public Guid ServiceId { get; set; }
     public DateTime Date { get; set; }
     public TimeSpan Time { get; set; }
+    public Duration Duration { get; set; }
     public bool Status { get; set; }
+
 
     public string ServiceName { get; set; }
     public string DoctorFirstName { get; set; }

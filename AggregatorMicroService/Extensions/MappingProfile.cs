@@ -10,8 +10,9 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         CreateMap<DoctorDto, DoctorWithOfficeDto>().ReverseMap();
+        CreateMap<DoctorDto, DoctorWithPhotoAndOffice>().ReverseMap();
         CreateMap<PatientForCreateDto, PatientForCreatedAggregatedDto>().ReverseMap();
         CreateMap<DoctorForCreateDto, DoctorForCreatedAggregatedDto>().ReverseMap();
-        CreateMap<AppointmentDto, AppointmentWithPatientPhoneDto>().ReverseMap();
+        CreateMap<AppointmentDto, AppointmentWithPatientPhoneAndOfficeDto>().ReverseMap();
     }
 }

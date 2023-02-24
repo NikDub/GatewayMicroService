@@ -7,7 +7,7 @@ public class DoctorForCreateDto
     public string LastName { get; set; }
     public string MiddleName { get; set; }
     public DateTime DateOfBirth { get; set; }
-    public Guid StatusId { get; set; }
+    public StatusDto Status { get; set; }
     public int CareerStartYear { get; set; }
     public string AccountPhoneNumber { get; set; }
     public Guid SpecializationId { get; set; }

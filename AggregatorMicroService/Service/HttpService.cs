@@ -1,8 +1,8 @@
-﻿using System.Net;
-using System.Text;
-using AggregatorMicroService.Exceptions;
+﻿using AggregatorMicroService.Exceptions;
 using AggregatorMicroService.Service.Abstraction;
 using Newtonsoft.Json;
+using System.Net;
+using System.Text;
 
 namespace AggregatorMicroService.Service;
 
@@ -27,10 +27,19 @@ public class HttpService : IHttpService
     public async Task<T> HttpGetByIdAsync<T>(string url, Guid id, string attributeFromHeader)
     {
         var httpClient = _httpClientFactory.CreateClient();
-        httpClient.DefaultRequestHeaders.Add("Authorization", attributeFromHeader);
+        if (attributeFromHeader != null)
+            httpClient.DefaultRequestHeaders.Add("Authorization", attributeFromHeader);
         var responseMessage = await httpClient.GetAsync($"{url}/{id}");
         CheckAndGenerateExceptionByNotSuccessfullyStatusCode(responseMessage);
         return JsonConvert.DeserializeObject<T>(await responseMessage.Content.ReadAsStringAsync());
+    }
+    public async Task<string> HttpGetStringByIdAsync(string url, Guid id, string attributeFromHeader)
+    {
+        var httpClient = _httpClientFactory.CreateClient();
+        httpClient.DefaultRequestHeaders.Add("Authorization", attributeFromHeader);
+        var responseMessage = await httpClient.GetAsync($"{url}/{id}");
+        CheckAndGenerateExceptionByNotSuccessfullyStatusCode(responseMessage);
+        return await responseMessage.Content.ReadAsStringAsync();
     }
 
     public async Task<T> HttpCreateAsync<T, TF>(string url, TF content, string attributeFromHeader)
@@ -42,6 +51,17 @@ public class HttpService : IHttpService
         var responseMessage = await httpClient.PostAsync(url, requestContent);
         CheckAndGenerateExceptionByNotSuccessfullyStatusCode(responseMessage);
         return JsonConvert.DeserializeObject<T>(await responseMessage.Content.ReadAsStringAsync());
+    }
+
+    public async Task<Guid> HttpCreateAsync<TF>(string url, TF content, string attributeFromHeader)
+    {
+        var httpClient = _httpClientFactory.CreateClient();
+        httpClient.DefaultRequestHeaders.Add("Authorization", attributeFromHeader);
+        var data = System.Text.Json.JsonSerializer.Serialize(content);
+        var requestContent = new StringContent(data, Encoding.UTF8, "application/json");
+        var responseMessage = await httpClient.PostAsync(url, requestContent);
+        CheckAndGenerateExceptionByNotSuccessfullyStatusCode(responseMessage);
+        return Guid.Parse(await responseMessage.Content.ReadAsStringAsync());
     }
 
     public async Task HttpPutAsync<TF>(string url, Guid id, TF content, string attributeFromHeader)

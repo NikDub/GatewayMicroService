@@ -12,9 +12,11 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.ConfigureOcelot(builder.Configuration);
         builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddCors();
         builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
+        app.UseCors(x => x.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
 
         if (app.Environment.IsDevelopment())
         {

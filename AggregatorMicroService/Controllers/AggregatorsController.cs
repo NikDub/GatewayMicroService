@@ -1,7 +1,5 @@
 ﻿using AggregatorMicroService.Dto.Aggregated;
-using AggregatorMicroService.Entities.Enums;
 using AggregatorMicroService.Service.Abstraction;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AggregatorMicroService.Controllers;
@@ -20,7 +18,13 @@ public class AggregatorsController : Controller
     [HttpGet("DoctorsWithOffice")]
     public async Task<IActionResult> GetDoctorsWithOffice()
     {
-        return Ok(await _aggregatorService.GetDoctorWithOfficeAsync(GetAuthorizationFromHeader()));
+        return Ok(await _aggregatorService.GetDoctorsWithOfficeAsync(GetAuthorizationFromHeader()));
+    }
+
+    [HttpGet("DoctorsWithPhoto")]
+    public async Task<IActionResult> GetDoctorsWithPhoto()
+    {
+        return Ok(await _aggregatorService.GetDoctorsWithPhotoAsync(GetAuthorizationFromHeader()));
     }
 
     [HttpPost("Doctor")]
@@ -42,6 +46,13 @@ public class AggregatorsController : Controller
     {
         return Ok(await _aggregatorService.GetAppointmentScheduleAsync(GetAuthorizationFromHeader()));
     }
+
+    [HttpGet("Appointments/TimeSlots/{doctorId}")]
+    public async Task<IActionResult> GetTimeSlotsWithReserved(Guid doctorId)
+    {
+        return Ok(await _aggregatorService.GetTimeSlotsWithReserved(doctorId));
+    }
+
     private string GetAuthorizationFromHeader()
     {
         if (Request.Headers.TryGetValue(Authorization, out var attributeFromHeader))
